@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'durin',
     'users',
+    'authentication',
     'price_tracker'
 ]
 
@@ -104,6 +105,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('durin.auth.TokenAuthentication',)
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -126,3 +132,20 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
+
+
+from datetime import timedelta
+from rest_framework.settings import api_settings
+REST_DURIN = {
+        "DEFAULT_TOKEN_TTL": timedelta(days=1),
+        "TOKEN_CHARACTER_LENGTH": 64,
+        "USER_SERIALIZER": None,
+        "AUTH_HEADER_PREFIX": "Token",
+        "EXPIRY_DATETIME_FORMAT": api_settings.DATETIME_FORMAT,
+        "TOKEN_CACHE_TIMEOUT": 60,
+        "REFRESH_TOKEN_ON_LOGIN": False,
+        "AUTHTOKEN_SELECT_RELATED_LIST": ["user"],
+        "API_ACCESS_CLIENT_NAME": None,
+        "API_ACCESS_EXCLUDE_FROM_SESSIONS": False,
+        "API_ACCESS_RESPONSE_INCLUDE_TOKEN": False,
+}

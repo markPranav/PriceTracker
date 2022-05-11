@@ -6,7 +6,7 @@ from users.models import User
 
 class Product(models.Model):
     name = models.CharField(max_length=50, blank=False, null= False)
-    url = models.URLField(blank=False, null=False)
+    url = models.URLField(blank=False, null=False, unique=True)
 
 class PriceHistory(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
