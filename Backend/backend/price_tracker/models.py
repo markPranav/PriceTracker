@@ -11,6 +11,7 @@ class Product(models.Model):
 class PriceHistory(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
+    availability = models.BooleanField(blank=False, null=False)
     actual_price = models.FloatField(blank=True, null=True)
     sell_price = models.FloatField(blank=False, null=False)
 
