@@ -21,5 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'api/auth/', include('authentication.urls')),
     re_path(r'api/user/', include('users.urls')),
+    re_path(r'api/product/', include('price_tracker.urls')),
+    
     
 ]
