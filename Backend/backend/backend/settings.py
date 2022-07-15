@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-zh+5uz2@2qo*arc@@)ml=shamzm0mn1p@1t0v4r*p(yz#@vsid
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'price-tracker-69.herokuapp.com']
+ALLOWED_HOSTS = ['0.0.0.0', 'price-tracker-69.herokuapp.com','172.17.134.249']
 
 
 # Application definition
