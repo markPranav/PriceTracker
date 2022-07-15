@@ -94,16 +94,16 @@ def check_products(request):
             #Website is down, need to update availability
             
             
-        history=PriceHistory.objects.filter(product=p).latest('timestamp')
+        history=PriceHistory.objects.get(product=p.id).latest('timestamp')
         
         if history.exist()==False:
-            temp=PriceHistory(product=p,availability=prices[2],actual_price=prices[1],sell_price=prices[0])
+            temp=PriceHistory(product=p.id,availability=prices[2],actual_price=prices[1],sell_price=prices[0])
             temp.save()
             continue
             
                       
         if prices[0]!=history.sell_price and prices[2]!=history.availability:
-            temp=PriceHistory(product=p,availability=prices[2],actual_price=prices[1],sell_price=prices[0])
+            temp=PriceHistory(product=p.id,availability=prices[2],actual_price=prices[1],sell_price=prices[0])
             temp.save()
             
                  
