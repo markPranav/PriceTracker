@@ -7,7 +7,9 @@ from durin.auth import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from price_tracker.serializer import ProductSerializer
-from .models import Product
+from .models import PriceHistory, Product
+from rest_framework.decorators import api_view
+from scrapers import genericScrapper
 
 class ProductsList(APIView):
 
@@ -74,3 +76,37 @@ class ProductDetail(APIView):
         product.delete()
         
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+@api_view(['GET'])
+def check_products(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    
+    products = Product.objects.all()
+    
+    for p in products:
+        try:
+            prices=genericScrapper(p.url)
+        except Exception as e:
+            print(e)
+            #Website is down, need to update availability
+            
+            
+        history=PriceHistory.objects.filter(product=p).latest('timestamp')
+        
+        if history.exist()==False:
+            temp=PriceHistory(product=p,availability=prices[2],actual_price=prices[1],sell_price=prices[0])
+            temp.save()
+            continue
+            
+                      
+        if prices[0]!=history.sell_price and prices[2]!=history.availability:
+            temp=PriceHistory(product=p,availability=prices[2],actual_price=prices[1],sell_price=prices[0])
+            temp.save()
+            
+                 
+    
+    
+    return Response(status=status.HTTP_200_OK)
