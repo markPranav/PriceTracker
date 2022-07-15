@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from price_tracker.serializer import ProductSerializer
 from .models import PriceHistory, Product
 from rest_framework.decorators import api_view
-from scrapers import genericScrapper
+from .scrapers import genericScrapper
 
 class ProductsList(APIView):
 
