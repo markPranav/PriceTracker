@@ -28,6 +28,9 @@ psycopg2==2.9.3; python_version >= "3.6" \
     --hash=sha256:8cf3878353cc04b053822896bc4922b194792df9df2f1ad8da01fb3043602126 \
     --hash=sha256:06f32425949bd5fe8f625c49f17ebb9784e1e4fe928b7cce72edc36fb68e4c0c \
     --hash=sha256:8e841d1bf3434da985cc5ef13e6f75c8981ced601fd70cc6bf33351b91562981
+python-dotenv==0.20.0; python_version >= "3.5" \
+    --hash=sha256:b7e3b04a59693c42c36f9ab1cc2acc46fa5df8c78e178fc33a8d4cd05c8d498f \
+    --hash=sha256:d92a187be61fe482e4fd675b6d52200e7be63a12b724abbf931a40ce4fa92938
 pytz==2022.1; python_version >= "3.6" \
     --hash=sha256:e68985985296d9a66a881eb3193b0906246245294a881e7c8afe623866ac6a5c \
     --hash=sha256:1e760e2fe6a8163bc0b3d9a19c4f84342afa0a2affebfaa84b01b978a02ecaa7
