@@ -21,8 +21,6 @@ class ProductsList(APIView):
         serializer=ProductSerializer(products,many=True)
         
         return Response(serializer.data,status=status.HTTP_200_OK)
-        
-        
 
     def post(self, request, format=None):
         
@@ -33,12 +31,6 @@ class ProductsList(APIView):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
-    
-        
-        
-        
-        
-
 
 class ProductDetail(APIView):
 
@@ -80,9 +72,6 @@ class ProductDetail(APIView):
 
 @api_view(['GET'])
 def check_products(request):
-    """
-    List all code snippets, or create a new snippet.
-    """
     
     products = Product.objects.all()
     
@@ -93,18 +82,26 @@ def check_products(request):
             print(e)
             #Website is down, need to update availability
             
-            
-        history=PriceHistory.objects.filter(product=p).latest('timestamp')
         
-        if history.exist()==False:
-            temp=PriceHistory(product=p,availability=prices[2],actual_price=prices[1],sell_price=prices[0])
+        try:
+            history=PriceHistory.objects.get(product=p.id).latest('timestamp')
+            if prices[0]!=history.sell_price and prices[2]!=history.availability:
+                temp=PriceHistory(product=p.id,availability=prices[2],actual_price=prices[1],sell_price=prices[0])
+                temp.save()
+        except PriceHistory.DoesNotExist as e:
+            temp=PriceHistory(product=p.id,availability=prices[2],actual_price=prices[1],sell_price=prices[0])
             temp.save()
             continue
+        
+        # if history.exist()==False:
+        #     temp=PriceHistory(product=p.id,availability=prices[2],actual_price=prices[1],sell_price=prices[0])
+        #     temp.save()
+        #     continue
             
                       
-        if prices[0]!=history.sell_price and prices[2]!=history.availability:
-            temp=PriceHistory(product=p,availability=prices[2],actual_price=prices[1],sell_price=prices[0])
-            temp.save()
+        # if prices[0]!=history.sell_price and prices[2]!=history.availability:
+        #     temp=PriceHistory(product=p.id,availability=prices[2],actual_price=prices[1],sell_price=prices[0])
+        #     temp.save()
             
                  
     
