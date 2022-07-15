@@ -86,6 +86,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #     }
 # }
 
+if(not os.environ.get("PROD")):
+    from dotenv import load_dotenv
+    load_dotenv()
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
