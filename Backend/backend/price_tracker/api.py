@@ -79,7 +79,7 @@ def check_products(request):
         try:
             prices=genericScrapper(p.url)
         except Exception as e:
-            print(e)
+            print(p.url, e)
             continue
             #Website is down, need to update availability
             
