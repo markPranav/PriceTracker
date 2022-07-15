@@ -12,7 +12,7 @@ def vishalPeripherals(url):
   pass
 
 def genericScrapper(url):
-  page = requests.get(url, timeout=2)
+  page = requests.get(url, timeout=5)
   soup = BeautifulSoup(page.content, 'html.parser')
   
   if(soup.find(class_=re.compile("woocommerce"))):
