@@ -29,8 +29,8 @@ def genericScrapper(url):
     driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     print(driver)
     driver.get(url)
-    sleep(5)
-    print(driver.title, driver.page_source)
+    sleep(10)
+    print(driver.title)
     raise Exception("Bot detected")
   soup = BeautifulSoup(page.content, 'html.parser')
   
