@@ -1,7 +1,7 @@
 import re
+from time import sleep
 from bs4 import BeautifulSoup
 import requests
-from urllib.request import urlopen
 
 def wooCommerce(url):
   pass
@@ -16,7 +16,21 @@ def genericScrapper(url):
   headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0",
        "Accept-Encoding": "gzip, deflate", "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
        "DNT": "1", "Connection": "close", "Upgrade-Insecure-Requests": "1"}
-  page = urlopen(url, timeout=2)
+  page = requests.get(url, timeout=2,headers=headers)
+  if(page.status_code in [403, 503]):
+    from selenium import webdriver
+    import os
+
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+    page = driver.get(url)
+    sleep(5)
+    print(page.status_code)
+    raise Exception("Bot detected")
   soup = BeautifulSoup(page.content, 'html.parser')
   
   if(soup.find(class_=re.compile("woocommerce"))):
