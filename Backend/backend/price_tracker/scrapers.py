@@ -18,19 +18,6 @@ def genericScrapper(url):
        "DNT": "1", "Connection": "close", "Upgrade-Insecure-Requests": "1"}
   page = requests.get(url, timeout=2,headers=headers)
   if(page.status_code in [403, 503]):
-    from selenium import webdriver
-    import os
-
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--no-sandbox")
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-    print(driver)
-    driver.get(url)
-    sleep(10)
-    print(driver.title)
     raise Exception("Bot detected")
   soup = BeautifulSoup(page.content, 'html.parser')
   
