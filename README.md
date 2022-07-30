@@ -32,7 +32,7 @@ This project is driven by the decentralised web 3.0 approach to track prices of 
 5. These products are thus tracked without the help from main server, reducing the operating costs and legal liabilities or any other hassles.
 6. Therefore, this projects transpires a decentralised web 3.0 architecture.
 
-#### why a centralised system won't work?
+### why a centralised system won't work?
 - Most commonly used servers are blacklisted by e-commerce websites to prevent scraping or tracking of products, so continuous tracking of products is hard to implement.
 - Cloundflare, a leading security firewall prevents us from accesing the product url.
 - But, if user pings the product and shares the details among his peers on the network, the websites will not be able to blacklist them as it would lead to loss of business.
