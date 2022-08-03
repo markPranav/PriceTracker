@@ -1,101 +1,111 @@
+import { Navbar, Group, Code, ScrollArea, createStyles, Menu } from '@mantine/core';
+import { Icon2fa, IconBellRinging, IconDatabaseImport, IconFingerprint, IconKey, IconLogout, IconReceipt2, IconSettings, IconSwitchHorizontal } from '@tabler/icons';
 import { useState } from 'react';
-import { Navbar, Center, Tooltip, UnstyledButton, createStyles, Stack } from '@mantine/core';
-import {
-  TablerIcon,
-  IconHome2,
-  IconGauge,
-  IconDeviceDesktopAnalytics,
-  IconFingerprint,
-  IconCalendarStats,
-  IconUser,
-  IconSettings,
-  IconLogout,
-  IconSwitchHorizontal,
-} from '@tabler/icons';
-// import { MantineLogo } from '@mantine/ds';
+import { UserButton } from './userButton';
 
-const useStyles = createStyles((theme) => ({
-  link: {
-    width: 50,
-    height: 50,
-    borderRadius: theme.radius.md,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.gray[7],
-
-    '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[0],
-    },
-  },
-
-  active: {
-    '&, &:hover': {
-      backgroundColor: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).background,
-      color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color,
-    },
-  },
-}));
-
-interface NavbarLinkProps {
-  icon: TablerIcon;
-  label: string;
-  active?: boolean;
-  onClick?(): void;
-}
-
-interface NavbarProps{
-    hidden: boolean;
-}
-
-function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
-  const { classes, cx } = useStyles();
-  return (
-    <Tooltip label={label} position="right" transitionDuration={0}>
-      <UnstyledButton onClick={onClick} className={cx(classes.link, { [classes.active]: active })}>
-        <Icon stroke={1.5} />
-      </UnstyledButton>
-    </Tooltip>
-  );
-}
 
 const mockdata = [
-  { icon: IconHome2, label: 'Home' },
-  { icon: IconGauge, label: 'Dashboard' },
-  { icon: IconDeviceDesktopAnalytics, label: 'Analytics' },
-  { icon: IconCalendarStats, label: 'Releases' },
-  { icon: IconUser, label: 'Account' },
-  { icon: IconFingerprint, label: 'Security' },
-  { icon: IconSettings, label: 'Settings' },
-];
+  { link: '', label: 'Notifications', icon: IconBellRinging },
+  { link: '', label: 'Billing', icon: IconReceipt2 },
+  { link: '', label: 'Security', icon: IconFingerprint },
+  { link: '', label: 'SSH Keys', icon: IconKey },
+  { link: '', label: 'Databases', icon: IconDatabaseImport },
+  { link: '', label: 'Authentication', icon: Icon2fa },
+  { link: '', label: 'Other Settings', icon: IconSettings },
+]
 
-export function NavbarMinimal({hidden}: NavbarProps) {
-  const [active, setActive] = useState(2);
 
-  const links = mockdata.map((link, index) => (
-    <NavbarLink
-      {...link}
-      key={link.label}
-      active={index === active}
-      onClick={() => setActive(index)}
-    />
-  ));
+const useStyles = createStyles((theme, _params, getRef) => {
+  const icon: string = getRef('icon');
+  return {
+    navbar: {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
+      paddingBottom: 0,
+    },
+    link: {
+      ...theme.fn.focusStyles(),
+      display: 'flex',
+      alignItems: 'center',
+      textDecoration: 'none',
+      fontSize: theme.fontSizes.sm,
+      color: theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7],
+      padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
+      borderRadius: theme.radius.sm,
+      fontWeight: 500,
+
+      '&:hover': {
+        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+        color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+
+        [`& .${icon}`]: {
+          color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+        },
+      },
+    },
+
+    linkIcon: {
+      ref: icon,
+      color: theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.colors.gray[6],
+      marginRight: theme.spacing.sm,
+    },
+
+    linkActive: {
+      '&, &:hover': {
+        backgroundColor: theme.fn.variant({ variant: 'light', color: theme.primaryColor })
+          .background,
+        color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color,
+        [`& .${icon}`]: {
+          color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color,
+        },
+      },
+    },
+
+    footer: {
+      padding: theme.spacing.sm,
+      marginLeft: -theme.spacing.md,
+      marginRight: -theme.spacing.md,
+      borderTop: `1px solid ${
+        theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+      }`,
+    },
+  }
+});
+
+interface NavbarProps {
+  hidden: boolean;
+  activeLink: string;
+}
+
+export function NavbarSimple({hidden, activeLink}: NavbarProps) {
+  
+  const [active, setActive] = useState(activeLink);
+  const { classes, cx } = useStyles();
+  const links = mockdata.map((item) => <a
+    className={cx(classes.link, { [classes.linkActive]: item.label === active })}
+    href={item.link}
+    key={item.label}
+    onClick={(event) => {
+      event.preventDefault();
+      setActive(item.label);
+    }}
+  >
+    <item.icon className={classes.linkIcon} stroke={1.5} />
+    <span>{item.label}</span>
+  </a>);
 
   return (
-    <Navbar hidden={hidden} height={750} width={{ sm: 200, lg: 300 }} p="md">
-      <Center>
-      </Center>
-      <Navbar.Section grow mt={50}>
-        <Stack justify="center" spacing={0}>
-          {links}
-        </Stack>
+    <Navbar pt="md" px="md" hiddenBreakpoint="sm" hidden={hidden} width={{ sm: 270, lg: 320 }} className={classes.navbar} >
+
+      <Navbar.Section grow component={ScrollArea}>
+        {links}
       </Navbar.Section>
-      <Navbar.Section>
-        <Stack justify="center" spacing={0}>
-          <NavbarLink icon={IconSwitchHorizontal} label="Change account" />
-          <NavbarLink icon={IconLogout} label="Logout" />
-        </Stack>
+      <Navbar.Section className={classes.footer}>
+        <UserButton
+          image="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
+          name="Guest"
+          email="Sign in"/>
       </Navbar.Section>
     </Navbar>
   );
 }
+
